@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Text</title>
+</head>
+<body>
+    <h1>Speech to Text Example</h1>
+    <button id="startBtn">Start Recognition</button>
+    <p id="output">Speech will appear here...</p>
+
+    <script>
+        // Check if SpeechRecognition is supported by the browser
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert("Your browser doesn't support speech recognition.");
+        }
+
+        // Create a new SpeechRecognition object
+        const recognition = new SpeechRecognition();
+
+        // Set language for recognition (English in this case)
+        recognition.lang = "en-US";
+
+        // Set the continuous flag to true to keep recognizing even after pauses
+        recognition.continuous = true;
+
+        // Start listening for speech when the button is clicked
+        document.getElementById("startBtn").addEventListener("click", function() {
+            recognition.start();
+        });
+
+        // Event when speech is detected and recognized
+        recognition.onresult = function(event) {
+            let transcript = event.results[event.resultIndex][0].transcript;
+            document.getElementById("output").textContent = transcript;
+        };
+
+        // Event when an error occurs
+        recognition.onerror = function(event) {
+            console.error("Error occurred in speech recognition: " + event.error);
+        };
+
+        // Event when speech recognition ends
+        recognition.onend = function() {
+            console.log("Speech recognition ended.");
+        };
+    </script>
+</body>
+</html>
